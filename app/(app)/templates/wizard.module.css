@@ -1,0 +1,130 @@
+.wizard { display: flex; flex-direction: column; gap: 24px; }
+.titulo { font-size: 22px; margin-bottom: 4px; }
+
+/* passos */
+.passos { display: flex; gap: 8px; flex-wrap: wrap; list-style: none; margin: 0; padding: 0; }
+.passo {
+  display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 6px 16px 6px 8px; border-radius: 100px;
+  border: 1px solid var(--line-strong); background: var(--branco); color: var(--ink); font: inherit; font-size: 14px; font-weight: 600; cursor: pointer;
+}
+.passo:disabled { cursor: default; color: var(--ink-soft); opacity: 0.6; }
+.passo:focus-visible { outline: 2px solid var(--pine); outline-offset: 2px; }
+.passoAtual { background: var(--pine-fundo); border-color: var(--pine-fundo); color: var(--on-dark); }
+.numero {
+  width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 13px; background: var(--paper-tint); color: var(--pine);
+}
+.passoAtual .numero { background: var(--gold); color: var(--gold-texto); }
+
+/* 1 · categoria */
+.categorias { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 14px; }
+.categoria {
+  display: flex; flex-direction: column; gap: 8px; padding: 26px 24px; text-align: left; cursor: pointer; font: inherit; color: inherit;
+  border: 1px solid var(--line); transition: box-shadow 160ms ease, transform 160ms var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) { .categoria:hover { box-shadow: var(--shadow-lift); transform: translateY(-2px); } }
+.categoria:focus-visible { outline: 2px solid var(--pine); outline-offset: 3px; }
+.categoriaAtual { border-color: var(--pine); box-shadow: inset 0 0 0 1px var(--pine); }
+.categoriaNome { font-family: var(--display); font-weight: 600; font-size: 26px; }
+.categoriaTexto { font-size: 14.5px; color: var(--ink-soft); }
+.categoriaQtd { margin-top: 6px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--pine); }
+
+/* 2 · informações */
+.colunas { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+.bloco { padding: 22px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.campos { display: flex; flex-direction: column; gap: 16px; }
+.linha { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 10px; }
+.area { resize: vertical; min-height: 60px; line-height: 1.45; font-family: inherit; }
+.mais summary { cursor: pointer; font-weight: 600; font-size: 14px; color: var(--pine); padding: 6px 0; }
+.mais[open] summary { margin-bottom: 12px; }
+.grupo { border: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.opcoesRadio { display: flex; flex-direction: column; gap: 4px; }
+.opcoesRadio label { display: flex; align-items: center; gap: 10px; min-height: 36px; font-size: 14.5px; cursor: pointer; }
+.opcoesRadio input { width: 18px; height: 18px; accent-color: var(--pine); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  padding: 7px 12px; min-height: 36px; border-radius: 100px; border: 1.4px solid var(--line-strong); background: var(--branco);
+  color: var(--ink); font: inherit; font-size: 13px; font-weight: 500; cursor: pointer;
+}
+.chipAtivo { background: var(--pine-fundo); border-color: var(--pine-fundo); color: var(--on-dark); }
+.chipQtd { font-family: var(--mono); font-size: 11px; opacity: 0.7; margin-left: 2px; }
+.chip:focus-visible, .foto:focus-visible, .logo:focus-visible, .modelo:focus-visible, .opcaoArte:focus-visible { outline: 2px solid var(--pine); outline-offset: 2px; }
+.fotos { display: grid; grid-template-columns: repeat(auto-fill, minmax(76px, 1fr)); gap: 8px; max-height: 320px; overflow-y: auto; padding: 2px; }
+.foto { position: relative; width: 100%; aspect-ratio: 1; padding: 0; border: 2px solid transparent; border-radius: 8px; overflow: hidden; cursor: pointer; background: var(--paper-tint); }
+.foto img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.fotoAtiva { border-color: var(--pine); }
+.fotoMarca {
+  position: absolute; right: 4px; top: 4px; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  background: var(--pine-fundo); color: #fff; font-size: 13px; font-weight: 700;
+}
+.logos { display: flex; flex-wrap: wrap; gap: 8px; }
+.logo {
+  display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 8px; width: 104px; cursor: pointer;
+  border: 1px solid var(--line-strong); border-radius: 10px; background: var(--branco); font: inherit; font-size: 12px; color: var(--ink);
+}
+.logo img {
+  width: 84px; height: 60px; object-fit: contain; border-radius: 6px; background-color: #ffffff;
+  background-image:
+    linear-gradient(45deg, #e3e6df 25%, transparent 25%), linear-gradient(-45deg, #e3e6df 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #e3e6df 75%), linear-gradient(-45deg, transparent 75%, #e3e6df 75%);
+  background-size: 12px 12px; background-position: 0 0, 0 6px, 6px -6px, -6px 0;
+}
+.logo span { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.logoAtivo { border-color: var(--pine); box-shadow: inset 0 0 0 1px var(--pine); background: var(--paper-tint); }
+
+/* rodapé de cada passo */
+.rodape { grid-column: 1 / -1; display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
+.rodapeFixo {
+  position: sticky; bottom: 0; z-index: 2; padding: 14px 0; margin-top: 8px;
+  background: linear-gradient(transparent, var(--paper) 30%);
+}
+.falta { font-size: 13.5px; color: var(--rust); font-weight: 500; margin-right: auto !important; }
+.ok { font-size: 14px; margin-right: auto !important; }
+.quantidade { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; margin-right: auto; }
+.quantidade select { width: auto; min-width: 72px; }
+
+/* 3 · modelos e 4 · opções */
+.cabecalhoPasso { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+.acoesTopo { display: flex; gap: 8px; flex-wrap: wrap; }
+.gradeModelos { display: grid; grid-template-columns: repeat(auto-fill, minmax(184px, 1fr)); gap: 14px; }
+.modelo {
+  width: 100%; display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 8px 8px 12px; cursor: pointer;
+  border: 2px solid var(--line); border-radius: 14px; background: var(--branco); font: inherit; color: var(--ink);
+}
+.modelo > div:first-child { border-radius: 8px; box-shadow: 0 2px 8px rgba(7, 43, 36, 0.14); }
+.modeloMarcado { border-color: var(--pine); background: var(--paper-tint); }
+.modeloNome { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; }
+.caixa {
+  width: 20px; height: 20px; border-radius: 5px; border: 1.5px solid var(--linha-campo); display: inline-flex; align-items: center; justify-content: center;
+  font-size: 13px; color: #fff; background: var(--branco);
+}
+.modeloMarcado .caixa { background: var(--pine-fundo); border-color: var(--pine-fundo); }
+
+.gradeOpcoes { display: grid; grid-template-columns: repeat(auto-fill, minmax(232px, 1fr)); gap: 18px; }
+.opcao { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.opcaoArte {
+  position: relative; padding: 0; border: 3px solid transparent; border-radius: 12px; overflow: hidden; cursor: pointer; background: none;
+  box-shadow: var(--shadow);
+}
+.opcaoArte:disabled { cursor: default; }
+.opcaoMarcada .opcaoArte { border-color: var(--pine); }
+.opcaoPublicada .opcaoArte { border-color: var(--gold); opacity: 0.75; }
+/* marcada ou publicada: um selo pequeno no canto, para não cobrir a arte */
+.selo {
+  position: absolute; right: 8px; top: 8px; min-width: 30px; height: 30px; box-sizing: border-box; padding: 0 10px;
+  display: flex; align-items: center; justify-content: center; border-radius: 100px; font-size: 13px; font-weight: 700;
+  background: rgba(7, 23, 19, 0.78); color: #fff; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+.opcaoNome { font-size: 13.5px; font-weight: 600; color: var(--ink-soft); }
+.opcaoMarcada .selo { background: var(--pine-fundo); }
+.opcaoPublicada .selo { background: var(--gold); color: var(--gold-texto); }
+.opcaoAcoes { display: flex; gap: 8px; }
+
+@media (max-width: 900px) {
+  .colunas { grid-template-columns: 1fr; }
+}
+@media (max-width: 520px) {
+  .linha { grid-template-columns: 1fr 1fr; }
+  .linha > :first-child { grid-column: 1 / -1; }
+  .gradeOpcoes { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+}

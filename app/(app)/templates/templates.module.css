@@ -1,0 +1,37 @@
+.cabeca { display: flex; flex-direction: column; gap: 10px; margin-bottom: 22px; max-width: 680px; }
+.cabeca > p:last-child { margin-top: 0; }
+
+/* automático × manual */
+.modos { display: grid; grid-template-columns: repeat(2, minmax(0, 320px)); gap: 12px; margin-bottom: 28px; }
+.modo {
+  display: flex; flex-direction: column; gap: 4px; padding: 14px 18px; border-radius: 14px; text-decoration: none; color: var(--ink);
+  border: 1.5px solid var(--line-strong); background: var(--branco); transition: border-color 160ms ease, background 160ms ease;
+}
+@media (hover: hover) and (pointer: fine) { .modo:hover { border-color: var(--pine); } }
+.modo:focus-visible { outline: 2px solid var(--pine); outline-offset: 2px; }
+.modoAtual { border-color: var(--pine-fundo); background: var(--pine-fundo); color: var(--on-dark); }
+.modoNome { font-family: var(--display); font-weight: 600; font-size: 19px; }
+.modoTexto { font-size: 13.5px; opacity: 0.85; }
+
+/* manual: a lista de modelos por categoria */
+.categorias { display: flex; flex-direction: column; gap: 36px; }
+.categoriaTopo { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; }
+.categoriaTopo h2 { font-size: 24px; }
+.qtd { font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+.lista { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 18px; }
+.cartao {
+  display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 18px 14px 16px; height: 100%; box-sizing: border-box;
+  text-decoration: none; color: inherit; transition: box-shadow 160ms ease, transform 160ms var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) { .cartao:hover { box-shadow: var(--shadow-lift); transform: translateY(-2px); } }
+.cartao:focus-visible { outline: 2px solid var(--pine); outline-offset: 3px; }
+.miniatura { overflow: hidden; border-radius: 10px; box-shadow: 0 4px 14px rgba(7, 43, 36, 0.18); flex: none; pointer-events: none; }
+.texto { display: flex; flex-direction: column; gap: 4px; width: 100%; }
+.texto h3 { font-size: 19px; }
+.texto p { font-size: 13.5px; color: var(--ink-soft); }
+.usar { margin-top: 6px; font-weight: 600; font-size: 14px; color: var(--pine); }
+
+@media (max-width: 560px) {
+  .modos { grid-template-columns: 1fr 1fr; }
+  .modoTexto { display: none; }
+}

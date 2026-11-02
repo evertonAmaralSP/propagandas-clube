@@ -1,0 +1,9 @@
+/* O resto (filtros, legenda, detalhe) vem da galeria de fotos; aqui só o que muda para artes 9:16. */
+.grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 16px; }
+.cartao.cartao { aspect-ratio: 9 / 16; }
+.acoes { display: flex; flex-direction: column; gap: 10px; }
+.acoes > * { text-align: center; justify-content: center; }
+.aviso {
+  display: flex; flex-direction: column; gap: 10px; align-items: flex-start;
+  font-size: 13.5px; padding: 12px 14px; border-radius: 10px; background: var(--paper-tint); color: var(--ink);
+}

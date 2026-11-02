@@ -6,6 +6,9 @@ import t from './topo.module.css'
 const DESTINOS = [
   { href: '/enviar', rotulo: 'Enviar imagens' },
   { href: '/galeria', rotulo: 'Galeria' },
+  { href: '/logo', rotulo: 'Logo do clube' },
+  { href: '/templates', rotulo: 'Templates' },
+  { href: '/propagandas', rotulo: 'Propagandas' },
 ]
 
 /** A navegação do topo. No celular ela desce para uma faixa própria, logo abaixo da marca. */
@@ -21,10 +24,6 @@ export function Navegacao() {
           </LinkDeRota>
         )
       })}
-      {/* passo 2: a galeria de templates, que vai usar estas imagens */}
-      <span className={`${t.item} ${t.emBreve}`} aria-disabled="true" title="A galeria de templates vem no próximo passo">
-        Templates <span className={t.selo}>em breve</span>
-      </span>
     </nav>
   )
 }
