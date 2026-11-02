@@ -28,6 +28,13 @@ moldura de acesso e `components/rota.tsx`).
     Storage, sem passar pela função. Sem otimizador de imagem (transformação é recurso pago do Supabase).
 - As medidas (largura × altura) são lidas no navegador antes do envio.
 
+## Desenvolvimento local
+
+Por decisão do dono, o desenvolvimento segue com **Supabase local** (CLI `supabase` nas devDependencies,
+`supabase/config.toml`): `npm run db:start`, `db:status`, `db:reset` e `db:stop`. O `supabase/seed.sql` cria
+duas contas locais (`lider@` e `outro@propagandas.local`, senha no README). O cadastro aberto fica desligado
+(`enable_signup = false`), como no chatbot. Ainda não há projeto Supabase na nuvem nem site no Netlify.
+
 ## Variáveis
 
 `SUPABASE_URL` e `SUPABASE_PUBLISHABLE_KEY` (veja `.env.example`). O navegador não fala com o Supabase

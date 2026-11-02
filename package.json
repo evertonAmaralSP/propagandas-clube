@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "db:start": "supabase start",
+    "db:stop": "supabase stop",
+    "db:reset": "supabase db reset",
+    "db:status": "supabase status"
   },
   "dependencies": {
     "@supabase/ssr": "0.12.6",
@@ -23,6 +27,7 @@
     "@types/react-dom": "19.1.0",
     "eslint": "9.39.1",
     "eslint-config-next": "15.5.25",
+    "supabase": "2.121.0",
     "typescript": "5.9.3"
   }
 }
