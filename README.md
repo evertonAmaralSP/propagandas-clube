@@ -23,5 +23,5 @@ Contas do seed (só existem no Supabase local):
 
 Use a segunda para conferir que uma pessoa vê as fotos da outra, mas não consegue excluí-las.
 
-- Studio (tabelas, Storage, usuários): http://127.0.0.1:54323
+- Studio (tabelas, Storage, usuários): http://127.0.0.1:55423
 - `npm run db:reset` apaga tudo e reaplica migrations e seed. `npm run db:stop` desliga.
