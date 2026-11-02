@@ -1,0 +1,14 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Como no chatbot: só a produção (main) faz build. PR e outras branches não fazem preview,
+# para não gastar créditos do Netlify. "exit 0" no ignore cancela o build.
+[context.deploy-preview]
+  ignore = "exit 0"
+
+[context.branch-deploy]
+  ignore = "exit 0"

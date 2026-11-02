@@ -1,0 +1,67 @@
+/* A barra de progresso da navegação, copiada do instrutores-clube. Ver o porquê em `rota.tsx`.
+
+   `position: fixed` no alto da janela; z-index 70 fica acima do menu e da
+   gaveta (30 a 50), e `pointer-events: none` garante que 3px atravessados na
+   tela nunca roubem um clique. */
+.trilho {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 70;
+  pointer-events: none;
+}
+
+/* `scaleX` e não `width`: escala não recalcula layout, e a barra precisa correr
+   enquanto o servidor ocupa a thread.
+
+   `forwards` aqui é seguro: este elemento é uma folha vazia, não é ancestral
+   de ninguém, então o transform que sobra não vira referencial de `fixed`. */
+.avanco {
+  height: 100%;
+  background: var(--gold, #f2b32c);
+  transform-origin: left center;
+  transform: scaleX(0.02);
+  animation: avancaRota 8s cubic-bezier(0.25, 0.8, 0.35, 1) forwards;
+}
+
+/* A curva do artboard: finge progresso honesto sem saber quanto falta. Corre
+   rápido no começo, onde a espera ainda não incomoda, e vai travando — 62% em
+   30% do tempo, 86% em 70% — para nunca prometer um fim que não é dela. Os 8s
+   são o teto: navegação mais longa que isso fica parada em 94%, que é a leitura
+   certa ("ainda estou tentando"), e não em 100%, que seria mentira. */
+@keyframes avancaRota {
+  0% { transform: scaleX(0.02); }
+  30% { transform: scaleX(0.62); }
+  70% { transform: scaleX(0.86); }
+  100% { transform: scaleX(0.94); }
+}
+
+/* Declarado DEPOIS de `.avanco`: mesma especificidade, então é esta regra que
+   vale quando as duas classes estão no elemento, e o avanço para de correr.
+   `--parado` é escrito em JS no instante do fecho — sem ele o fim daria um pulo
+   visível de onde estava para onde o keyframe começasse. */
+.conclui {
+  animation: concluiRota 240ms ease-out forwards;
+}
+
+@keyframes concluiRota {
+  0% { transform: scaleX(var(--parado, 0.9)); opacity: 1; }
+  55% { transform: scaleX(1); opacity: 1; }
+  100% { transform: scaleX(1); opacity: 0; }
+}
+
+/* Quem pediu menos movimento continua precisando do aviso — o que sai é a
+   corrida, não o sinal: uma barra inteira, parada, enquanto a rota não chega. */
+@media (prefers-reduced-motion: reduce) {
+  .avanco {
+    animation: none;
+    transform: scaleX(1);
+    opacity: 0.55;
+  }
+  .conclui {
+    animation: none;
+    opacity: 0;
+  }
+}

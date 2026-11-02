@@ -1,0 +1,45 @@
+/* O que só as telas de acesso usam, por cima da moldura de `portal.module.css`. */
+
+/* A casca do grupo `(auth)` vai até o pé da tela e pinta o papel. No celular a
+   grade da moldura empilha com `min-height: 0` — de propósito, para não
+   centralizar o formulário no meio da tela —, e o que sobrava embaixo de uma
+   tela curta era o `body` do layout raiz, branco puro: medido a 390×844 no
+   link de senha vencido, 258px de branco sob a tela escura. */
+.casca { min-height: 100svh; background: var(--paper); }
+
+/* A frase do painel é texto de apoio, não título: como `<h2>` ela era o
+   primeiro título da página, antes do `<h1>` do formulário. O desenho é o
+   mesmo que `.painelTitulo h2` dava. */
+.painelFrase {
+  font-family: var(--display); font-weight: 600; letter-spacing: -0.012em;
+  text-wrap: balance; font-size: 34px; line-height: 1.16; color: var(--on-dark);
+}
+
+/* O interruptor de tema no alto à direita. */
+.avisoOk {
+  display: flex; gap: 12px; align-items: flex-start;
+  margin-top: 22px; padding: 14px 16px; border-radius: 12px;
+  background: var(--paper-tint); border: 1px solid var(--line);
+  font-size: 14px; line-height: 1.5; color: var(--ink);
+}
+.avisoOk svg { flex-shrink: 0; margin-top: 2px; color: var(--pine); }
+
+/* "Esqueci minha senha" embaixo da senha, e não entre o rótulo e o campo: no
+   DOM de antes, o Tab saía do e-mail e caía no link. */
+.linhaEsqueci { display: flex; justify-content: flex-end; margin-top: 8px; font-size: 13px; }
+
+/* Links e botões de uma linha só, de 13px, eram faixas de ~20px no toque. O
+   respiro vertical aumenta o alvo sem mexer no desenho de quem usa mouse. */
+@media (pointer: coarse) {
+  .alvoDeToque { display: inline-block; padding-block: 10px; }
+}
+
+/* No celular a pílula desce para o fluxo, numa linha própria acima da coluna.
+   Absoluta, ela passava por cima do que estivesse no topo: do "Voltar para a
+   página inicial" a 320px e do título do convite, que não tem "Voltar", a
+   390px. E alinhada à borda dos campos: a coluna tem 22px de respiro, e a
+   pílula ficava a 34px. */
+@media (max-width: 900px) {
+  .painelFrase { font-size: 26px; }
+  .conteudoEstreito { flex-direction: column; }
+}

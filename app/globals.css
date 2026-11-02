@@ -1,0 +1,5 @@
+/* O sistema visual vem de `app/estilo/portal.module.css`, copiado do
+   instrutores-clube para as duas telas terem a mesma cara do portal. */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body { -webkit-font-smoothing: antialiased; }

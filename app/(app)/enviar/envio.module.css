@@ -1,0 +1,41 @@
+.cabeca { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; max-width: 680px; }
+.cabeca > p:last-child { margin-top: 0; }
+
+.grade { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 28px; align-items: start; }
+
+.zona {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+  min-height: 220px; padding: 32px 24px; border-radius: 14px; text-align: center; cursor: pointer;
+  border: 2px dashed var(--linha-campo); background: var(--branco); color: var(--pine);
+  transition: background 160ms ease, border-color 160ms ease;
+}
+.zona:focus-within { outline: 2px solid var(--pine); outline-offset: 2px; }
+.zonaAtiva { border-color: var(--pine); background: var(--paper-tint); }
+@media (hover: hover) and (pointer: fine) { .zona:hover { border-color: var(--pine); } }
+.zonaTitulo { font-family: var(--display); font-weight: 600; font-size: 21px; color: var(--ink); }
+.zonaSub { font-size: 14px; color: var(--ink-soft); }
+.oculto { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+
+.recusadas { margin-top: 14px !important; display: flex; flex-direction: column; gap: 4px; font-size: 13.5px; color: var(--rust); }
+
+.lista { display: flex; flex-direction: column; gap: 12px; margin-top: 20px !important; }
+.item { display: grid; grid-template-columns: 96px minmax(0, 1fr) auto; gap: 16px; padding: 14px; align-items: start; }
+.miniatura { width: 96px; height: 96px; object-fit: cover; border-radius: 10px; background: var(--paper-tint); display: block; }
+.dados { min-width: 0; }
+.lado { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+
+.painel { padding: 22px; display: flex; flex-direction: column; gap: 18px; position: sticky; top: 24px; }
+.etiquetas { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.resumo { display: flex; justify-content: space-between; font-size: 13.5px; color: var(--ink-soft); border-top: 1px solid var(--line); padding-top: 14px; }
+.depois { display: flex; gap: 10px; flex-wrap: wrap; }
+
+@media (max-width: 900px) {
+  .grade { grid-template-columns: 1fr; }
+  .painel { position: static; }
+  .zona { min-height: 170px; }
+}
+@media (max-width: 520px) {
+  .item { grid-template-columns: 72px minmax(0, 1fr); }
+  .miniatura { width: 72px; height: 72px; }
+  .lado { grid-column: 1 / -1; flex-direction: row; justify-content: space-between; align-items: center; }
+}

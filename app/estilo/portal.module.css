@@ -1,0 +1,542 @@
+/* Sistema visual do portal: as cores e os componentes que as telas dividem
+   entre si. Escopado a `.tokens`, para não vazar no tema do Tailwind. */
+.tokens {
+  --paper: #f3f5ee;
+  --paper-tint: #e9f0e7;
+  --branco: #ffffff;
+  --ink: #12241d;
+  --ink-soft: #4c5c53;
+  --pine: #14574a;
+  /* Um token por papel do pinheiro. `--pine` é só TEXTO de acento; o verde que
+     preenche botão, faixa e barra tem nome próprio, porque no escuro texto
+     clareia e fundo escurece — e um token só não faz os dois. Os valores aqui
+     são exatamente o que as regras já pintavam, para o claro não mudar nada. */
+  --pine-hover: #0b3d33;
+  --pine-fundo: #14574a;
+  --pine-fundo-hover: #0b3d33;
+  --chrome: #0b3d33;
+  --painel: #0b3d33;
+  --faixa-gestao: #14574a;
+  /* As duas camadas da silhueta de montanhas do painel de acesso. Existem como
+     token porque o SVG mora em `app/(auth)/moldura.tsx` e os `fill` estavam
+     escritos à mão: no escuro as montanhas continuavam verdes sobre o painel
+     quase-preto. */
+  --montanha-frente: #0a362d;
+  --montanha-fundo: #072b24;
+  --gold: #f2b32c;
+  --gold-soft: #fae9c4;
+  --gold-ink: #7a5605;
+  --rust: #ad4e2c;
+  --line: rgba(18, 36, 29, 0.14);
+  --line-strong: rgba(18, 36, 29, 0.26);
+  /* A borda de um campo é o único contorno que diz onde a caixa está, e por
+     isso precisa de 3:1 (WCAG 1.4.11); o `--line-strong` dava 1,73:1 e a caixa
+     sumia no sol. Os fios decorativos dos cartões continuam no `--line`. */
+  --linha-campo: rgba(18, 36, 29, 0.52);
+  /* O texto sobre o dourado e o dourado do hover, que estavam escritos à mão
+     em cada botão. Iguais nos dois temas: o dourado não escurece. */
+  --gold-texto: #2a1d02;
+  --gold-hover: #ffc348;
+  --on-dark: #eaf2ea;
+  --on-dark-soft: rgba(234, 242, 234, 0.72);
+  --line-dark: rgba(234, 242, 234, 0.16);
+  /* Papéis do chat que o tema escuro pinta diferente: no claro valem as cores
+     de sempre; no escuro o título fica dourado e a resposta perde o balão. */
+  --titulo: var(--ink);
+  --balao-lider: var(--pine-fundo);
+  --balao-lider-texto: var(--on-dark);
+  --balao-assistente: var(--branco);
+  --balao-assistente-borda: var(--line);
+  --balao-assistente-sombra: var(--shadow);
+  --balao-assistente-recuo: 16px;
+  /* Fundo de código e cabeçalho de tabela dentro da resposta. */
+  --codigo-fundo: var(--paper);
+  --shadow: 0 1px 2px rgba(7, 43, 36, 0.06), 0 12px 32px -14px rgba(7, 43, 36, 0.28);
+  --shadow-lift: 0 2px 4px rgba(7, 43, 36, 0.08), 0 28px 60px -24px rgba(7, 43, 36, 0.45);
+  --display: var(--dbv-display), Georgia, serif;
+  --corpo: var(--dbv-corpo), "Segoe UI", sans-serif;
+  --mono: var(--dbv-mono), "Courier New", monospace;
+  /* As curvas de movimento do portal. O `ease-out` nativo é fraco demais: gasta
+     a duração quase toda desacelerando e a peça parece chegar atrasada. */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  /* O que se move de um ponto a outro da tela, como a bola da chave. */
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  /* A gaveta do menu: arranca rápido e assenta devagar, como a do iOS. */
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  /* Passa um pouco do ponto e volta. Só para conquista rara — o módulo que o
+     desbravador acaba de fechar —, nunca em tela de trabalho. */
+  --ease-conquista: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  font-family: var(--corpo);
+  color: var(--ink);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  /* O flash cinza (iOS) ou azul (Android) que o navegador pinta sobre o que se
+     toca. É herdado, então vale para o portal, o `/r` e o modal; os controles
+     de toque têm `:active` próprio — os botões aqui, a gaveta e a barra de baixo
+     em `menu-mobile.module.css`, as seções do caderno em `/r`. Link comum fica
+     sem flash: o retorno dele é a própria navegação. */
+  -webkit-tap-highlight-color: transparent;
+}
+.tokens h1, .tokens h2, .tokens h3 {
+  font-family: var(--display);
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  text-wrap: balance;
+  margin: 0;
+}
+.tokens p { margin: 0; }
+.tokens ul { margin: 0; padding: 0; list-style: none; }
+
+/* ---------- tema escuro ---------- */
+/* Dois seletores, e não um: o primeiro pega o wrapper que `components/tema/
+   area.tsx` marca; o segundo pega `.tokens` aninhado dentro dele — é o caso do
+   <dialog> de `components/modal.tsx`, que carrega `.tokens` por conta própria e
+   nunca recebe o atributo. Sem a segunda metade, todo modal abria claro dentro
+   do portal escuro. */
+.tokens[data-tema='escuro'],
+[data-tema='escuro'] .tokens {
+  /* Cinza neutro, na linha do ChatGPT escuro (opção B, escolhida pelo dono em
+     25/10/2026): o tema anterior, marrom-quente, foi rejeitado. O dourado
+     continua sendo o acento — títulos, conversa aberta, avatar. */
+  --paper: #212121;
+  --paper-tint: #181818;
+  --branco: #2a2a2a;
+  --ink: #ececec;
+  --ink-soft: #b4b4b4;
+  /* --pine é cor de TEXTO (.link, .sugestaoArea): #6cc7a4 dá 8,6:1 sobre o
+     fundo e 7,7:1 sobre o cartão. */
+  --pine: #6cc7a4;
+  /* Texto e fundo puxam para lados opostos no escuro, e é por isso que cada
+     papel tem token próprio: o hover do texto clareia, o fundo do botão fica
+     no pinho escuro, que segura o #f3f5ee escrito nos botões. */
+  --pine-hover: #8fd8bb;
+  --pine-fundo: #1e5f50;
+  --pine-fundo-hover: #27735f;
+  --chrome: #171717;
+  --painel: #181818;
+  --faixa-gestao: #15342c;
+  /* A silhueta se lê pela diferença com o painel: a da frente clareia um
+     passo, a do fundo escurece. */
+  --montanha-frente: #222222;
+  --montanha-fundo: #121212;
+  --gold: #f2b32c;
+  --gold-soft: rgba(242, 179, 44, 0.13);
+  --gold-ink: #f2c25e;
+  --rust: #e2703a;
+  --line: rgba(255, 255, 255, 0.10);
+  --line-strong: rgba(255, 255, 255, 0.20);
+  /* 3:1 sobre o cartão (WCAG 1.4.11), como no claro. */
+  --linha-campo: rgba(255, 255, 255, 0.40);
+  --gold-texto: #2a1d02;
+  --gold-hover: #ffc348;
+  --on-dark: #ececec;
+  --on-dark-soft: rgba(236, 236, 236, 0.62);
+  --line-dark: rgba(255, 255, 255, 0.08);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px -14px rgba(0, 0, 0, 0.6);
+  --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.45), 0 28px 60px -24px rgba(0, 0, 0, 0.8);
+  /* O título dourado dá 8,4:1 sobre o fundo. A pergunta fica num balão cinza
+     e a resposta corre direto no fundo, sem caixa. */
+  --titulo: var(--gold);
+  --balao-lider: #303030;
+  --balao-lider-texto: #ececec;
+  /* a resposta tem fundo cheio, o do tema escuro sem o pontilhado da conversa */
+  --balao-assistente: var(--paper);
+  --balao-assistente-borda: transparent;
+  --balao-assistente-sombra: none;
+  --balao-assistente-recuo: 0px;
+  --codigo-fundo: #303030;
+
+  /* Faz o Chrome pintar barra de rolagem, caret e controles nativos no escuro.
+     Sem isto o <select> de papel do Membros continua branco. */
+  color-scheme: dark;
+}
+
+.mono { font-family: var(--mono); }
+.etiqueta {
+  font-family: var(--mono); font-size: 10.5px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft);
+}
+.eyebrow {
+  font-family: var(--mono); font-size: 11.5px; font-weight: 600; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--pine); display: flex; align-items: center; gap: 9px;
+}
+.eyebrow::before { content: ""; width: 20px; height: 2px; background: var(--pine); }
+.eyebrowClaro { color: var(--gold); }
+.eyebrowClaro::before { background: var(--gold); }
+
+.link { color: var(--pine); text-decoration: underline; text-underline-offset: 3px; }
+.voltar {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 13.5px; color: var(--ink-soft); text-decoration: none;
+}
+
+.card {
+  background: var(--branco); color: var(--ink);
+  border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow);
+}
+
+/* ---------- formulário ---------- */
+.rotulo { font-size: 13.5px; font-weight: 600; color: var(--ink); display: block; margin-bottom: 7px; }
+.campo {
+  width: 100%; padding: 13px 15px; border-radius: 10px;
+  border: 1.5px solid var(--linha-campo); background: var(--branco);
+  font-family: var(--corpo); font-size: 15px; color: var(--ink);
+}
+/* No toque, 16px. Abaixo disso o Safari do iPhone dá zoom na página quando o
+   campo recebe foco, e não desfaz ao sair — o instrutor terminava o formulário
+   olhando um pedaço da tela. Tirar o zoom da `viewport` resolveria à custa de
+   quem precisa ampliar; o tamanho da letra é a causa. No mouse fica o 15px
+   do desenho. As duas datas do caderno do instrutor, que são Tailwind, fazem o
+   mesmo com `pointer-coarse:text-base`. */
+@media (pointer: coarse) { .campo { font-size: 16px; } }
+.campo::placeholder { color: var(--ink-soft); }
+.campo:focus-visible { outline: 2px solid var(--pine); outline-offset: 1px; border-color: var(--pine); }
+.campo:disabled { background: var(--paper-tint); color: var(--ink-soft); border-style: dashed; -webkit-text-fill-color: var(--ink-soft); opacity: 1; }
+.ajuda { font-size: 12.5px; color: var(--ink-soft); margin-top: 7px; }
+.erro { font-size: 13.5px; color: var(--rust); font-weight: 500; }
+
+.btnGold {
+  display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+  padding: 15px 24px; border: none; border-radius: 10px;
+  background: var(--gold); color: var(--gold-texto);
+  font-family: var(--corpo); font-weight: 600; font-size: 15.5px;
+  text-decoration: none; cursor: pointer;
+  box-shadow: 0 10px 24px -12px rgba(242, 179, 44, 0.7);
+}
+/* O afundar ao pressionar é o recibo de que o toque chegou — no celular, onde
+   não há hover, era o único retorno que faltava antes da resposta do servidor.
+   0.97 e 160ms: estes botões são apertados dezenas de vezes por dia, e mais
+   que isso vira movimento que se nota. */
+.btnGold, .btnPine, .btnFino {
+  transition: transform 160ms var(--ease-out, cubic-bezier(0.23, 1, 0.32, 1)), background 160ms ease, border-color 160ms ease;
+}
+.btnGold:active:not(:disabled), .btnPine:active:not(:disabled), .btnFino:active:not(:disabled) {
+  transform: scale(0.97);
+}
+@media (prefers-reduced-motion: reduce) {
+  .btnGold, .btnPine, .btnFino { transition: background 160ms ease, border-color 160ms ease; }
+  .btnGold:active:not(:disabled), .btnPine:active:not(:disabled), .btnFino:active:not(:disabled) { transform: none; }
+}
+.btnGold:disabled { opacity: 0.55; cursor: default; }
+.btnLargo { width: 100%; }
+
+/* O check que troca o ícone de um botão depois da ação (o "Copiado"). Sem
+   entrada ele substituía o ícone anterior no mesmo quadro, e a troca passava
+   despercebida. Só o ícone se move: o texto e a largura do botão ficam onde
+   estão. */
+.recibo { transition: transform 150ms var(--ease-out), opacity 150ms var(--ease-out); }
+@starting-style {
+  .recibo { transform: scale(0.8); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .recibo { transition: opacity 150ms ease; }
+  @starting-style {
+    .recibo { transform: none; }
+  }
+}
+
+.btnPine {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 12px 22px; border: none; border-radius: 9px;
+  background: var(--pine-fundo); color: #f3f5ee;
+  font-family: var(--corpo); font-weight: 600; font-size: 14.5px;
+  text-decoration: none; cursor: pointer;
+}
+.btnPine:disabled { opacity: 0.55; cursor: default; }
+
+.btnFino {
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  padding: 9px 16px; border-radius: 8px; border: 1.4px solid var(--line-strong);
+  background: var(--branco); color: var(--ink);
+  font-family: var(--corpo); font-weight: 600; font-size: 13px;
+  text-decoration: none; cursor: pointer;
+}
+.btnFino:disabled { opacity: 0.5; cursor: default; }
+/* No toque, 44px de altura: com 9px de respiro o botão fino ficava em ~40px,
+   e ele é o de "Filtrar", "Cancelar" e dos alternadores do caderno. */
+@media (pointer: coarse) { .btnFino { min-height: 44px; } }
+.btnPerigo { color: var(--rust); border-color: rgba(173, 78, 44, 0.35); }
+
+/* Foco de teclado dos controles do portal. Antes só o campo tinha o seu; o
+   resto dependia do anel padrão, que muda de navegador para navegador e some
+   sobre o topo verde-escuro. Sobre o papel, verde-pinho; sobre o escuro do
+   topo, dourado — o verde some no verde-mata. */
+.btnGold:focus-visible, .btnPine:focus-visible, .btnFino:focus-visible,
+.link:focus-visible, .voltar:focus-visible, .interruptorPilula:focus-visible {
+  outline: 2px solid var(--pine); outline-offset: 2px;
+}
+.appNav a:focus-visible, .appUsuario:focus-visible, .appSair:focus-visible, .interruptor:focus-visible {
+  outline: 2px solid var(--gold); outline-offset: 2px;
+}
+
+/* Hover só onde existe ponteiro de verdade. No toque o navegador simula um
+   `:hover` que fica preso depois do toque até a pessoa tocar em outro lugar: o
+   "Salvar" dourado seguia claro depois de salvo. Quem toca recebe o retorno pelo
+   `:active` acima, que vale para os dois. */
+@media (hover: hover) and (pointer: fine) {
+  .link:hover { color: var(--pine-hover); }
+  .voltar:hover { color: var(--ink); }
+  .btnGold:hover:not(:disabled) { background: var(--gold-hover); }
+  .btnPine:hover:not(:disabled) { background: var(--pine-fundo-hover); }
+  .btnFino:hover:not(:disabled) { border-color: var(--ink-soft); }
+  .btnPerigo:hover:not(:disabled) { border-color: var(--rust); }
+}
+
+/* Rótulo de botão é controle, não conteúdo: segurar o dedo selecionava o texto
+   e abria o menu de copiar do iOS. `manipulation` tira a espera de toque
+   duplo — o botão responde no toque, e não 300ms depois. */
+.btnGold, .btnPine, .btnFino {
+  user-select: none; -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+/* ---------- selos ---------- */
+.chip {
+  font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.05em;
+  text-transform: uppercase; padding: 5px 10px; border-radius: 100px; white-space: nowrap;
+  display: inline-block;
+}
+.chipOk { background: rgba(20, 87, 74, 0.13); color: var(--pine); }
+.chipEspera { background: rgba(173, 78, 44, 0.10); color: var(--rust); }
+.chipNeutro { background: var(--gold-soft); color: var(--gold-ink); }
+
+/* Selo de contagem para o que espera resposta — admin e usuário dividem o
+   mesmo desenho; 1 a 9 mostra o número, "9+" é o teto (lib/selo.ts formata). */
+.selo {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 17px; height: 17px; padding: 0 5px;
+  border-radius: 9px; background: #b3261e; color: #fff;
+  font-family: var(--mono); font-size: 10.5px; font-weight: 700; line-height: 1;
+  white-space: nowrap;
+}
+
+.avisoGold {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 16px 18px; border-radius: 12px; background: var(--gold-soft);
+  font-size: 13.5px; color: var(--gold-ink); line-height: 1.5;
+}
+
+/* ---------- moldura das telas de acesso ---------- */
+.acesso { display: grid; grid-template-columns: 0.92fr 1.08fr; min-height: 100svh; background: var(--paper); }
+.painel {
+  background: var(--painel); color: var(--on-dark);
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column; justify-content: space-between;
+  padding: 48px 56px;
+}
+.painelMontanhas { position: absolute; left: 0; bottom: 0; width: 100%; height: 300px; }
+.painelBrilho {
+  position: absolute; left: -120px; top: -160px; width: 520px; height: 520px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(242, 179, 44, 0.18) 0%, rgba(242, 179, 44, 0) 68%);
+}
+.painelTitulo { position: relative; max-width: 30ch; }
+.painelTitulo h2 { font-size: 34px; line-height: 1.16; color: var(--on-dark); }
+.painelTitulo p { font-size: 15px; color: var(--on-dark-soft); margin-top: 16px; }
+.painelDestaque { color: var(--gold); }
+.painelRodape { position: relative; font-size: 13px; color: var(--on-dark-soft); }
+/* `relative` para o interruptor de tema, que é absoluto no alto à direita:
+   ancorado na página inteira ele cairia sobre o painel escuro no celular, onde
+   a grade empilha e `.conteudo` deixa de começar no topo. */
+.conteudo { position: relative; display: flex; align-items: center; justify-content: center; padding: 48px; }
+.coluna { width: 100%; max-width: 400px; }
+.tituloTela { font-size: 34px; line-height: 1.15; }
+.ledeTela { font-size: 15px; color: var(--ink-soft); margin-top: 10px; }
+.campos { display: flex; flex-direction: column; gap: 18px; margin-top: 30px; }
+.divisor { display: flex; align-items: center; gap: 14px; margin: 28px 0; }
+.divisor::before, .divisor::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.divisor span { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); }
+
+/* ---------- marca ---------- */
+.marca { display: flex; align-items: center; gap: 13px; position: relative; }
+.marcaTexto { display: flex; flex-direction: column; line-height: 1.2; }
+.marcaNome { font-family: var(--display); font-size: 18px; font-weight: 600; color: var(--on-dark); }
+/* A segunda palavra do nome, não um subtítulo — ver site.module.css. */
+.marcaSub { font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); }
+
+/* ---------- barra do portal ---------- */
+.appTopo { background: var(--chrome); border-bottom: 1px solid var(--line-dark); }
+/* "Pular para o conteúdo": fora da vista até receber o foco do teclado, e
+   então aparece sobre o topo, no canto de onde a leitura começa. */
+.pular {
+  position: absolute; left: 12px; top: 12px; z-index: 80;
+  padding: 10px 16px; border-radius: 8px;
+  background: var(--gold); color: var(--gold-texto); font-weight: 600; text-decoration: none;
+  transform: translateY(-160%);
+}
+.pular:focus-visible { transform: none; outline: 2px solid var(--on-dark); outline-offset: 2px; }
+.appTopoInterno {
+  max-width: 1200px; margin: 0 auto; padding: 0 40px; height: 72px;
+  display: flex; align-items: center; justify-content: space-between; gap: 28px;
+}
+/* `nowrap`: a barra tem altura fixa de 72px, e a segunda linha da navegação
+   não cabia nela — vazava por cima do conteúdo. Entre 900 e 1150px, com nome de
+   clube longo, quem cede é o espaçamento, e depois o nome, que já encurta com
+   reticências. Medido em 920px, onde a barra quebrava em duas linhas. */
+.appNav { display: flex; align-items: center; gap: 28px; flex-wrap: nowrap; }
+@media (max-width: 1150px) {
+  .appNav { gap: 16px; }
+  .appNav a.appConvidar { padding: 9px 12px; }
+}
+.appNav a { color: var(--on-dark-soft); text-decoration: none; font-size: 14.5px; }
+@media (hover: hover) and (pointer: fine) { .appNav a:hover { color: var(--on-dark); } }
+/* A única ação da barra, e por isso a única dourada — o resto ali é destino.
+   Não é o `.btnGold` das telas: com 15px de padding vertical ele empurraria a
+   barra de 72px. Casa com `.appNav a` para vencer a cor de link acima. */
+.appNav a.appConvidar {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 15px; border-radius: 8px;
+  background: var(--gold); color: var(--gold-texto); font-weight: 600;
+}
+@media (hover: hover) and (pointer: fine) { .appNav a.appConvidar:hover { background: var(--gold-hover); color: var(--gold-texto); } }
+.appPapel {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--on-dark-soft);
+}
+.appConta { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
+.appUsuario {
+  display: flex; flex-direction: column; line-height: 1.2; text-align: right; min-width: 0;
+  text-decoration: none; padding: 4px 6px; border-radius: 8px; margin-right: -6px;
+}
+@media (hover: hover) and (pointer: fine) { .appUsuario:hover { background: rgba(255, 255, 255, 0.1); } }
+.appNome {
+  font-size: 14px; font-weight: 600; color: var(--on-dark);
+  max-width: 22ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.appSair {
+  padding: 8px 16px; border-radius: 8px;
+  border: 1px solid var(--line-dark); background: transparent;
+  color: var(--on-dark); font-family: var(--corpo); font-size: 13.5px; font-weight: 600;
+  cursor: pointer; white-space: nowrap;
+}
+@media (hover: hover) and (pointer: fine) { .appSair:hover { border-color: var(--on-dark-soft); } }
+.appCorpo { background: var(--paper); min-height: calc(100svh - 72px); }
+.wrap { max-width: 1200px; margin: 0 auto; padding: 36px 40px 60px; }
+
+/* Impressão (fatia 3, Task 7): a barra do topo — logo, navegação, conta e o
+   menu do celular, que mora dentro dela — não tem papel nenhum na folha. */
+@media print {
+  .appTopo { display: none; }
+  .appCorpo { background: #fff; min-height: 0; }
+  .wrap { max-width: none; padding: 0; }
+}
+
+.qrGrid { }
+
+@media (max-width: 860px) {
+  .qrGrid { grid-template-columns: 1fr !important; gap: 28px !important; }
+}
+
+@media (max-width: 900px) {
+  .acesso { grid-template-columns: 1fr; min-height: 0; }
+  .painel { padding: 28px 22px; gap: 22px; }
+  .painelTitulo h2 { font-size: 26px; }
+  .painelMontanhas { height: 160px; }
+  .painelRodape { display: none; }
+  .conteudo { padding: 32px 22px 48px; }
+  .tituloTela { font-size: 28px; }
+  .appTopoInterno { height: 64px; padding: 0 20px; gap: 12px; }
+  .appNav { display: none; }
+  .appConta { display: none; }
+  .wrap { padding: 24px 20px 48px; }
+  /* Folga para a barra de baixo, que flutua por cima do conteúdo: sem ela a
+     última linha de cada tela termina debaixo da pílula. Só o portal do clube
+     a recebe — `.wrap` e `.appCorpo` também vestem o painel do admin. */
+  .comMenuDeBaixo { padding-bottom: calc(58px + env(safe-area-inset-bottom, 0px)); }
+  /* Dentro do clube sobram o sanduíche e o logo, e o sanduíche vem primeiro
+     (`.abrir` em menu-mobile.module.css): encostados à esquerda, não
+     espalhados pelas pontas. Só dentro do clube — a barra de `TopoConta`
+     mantém a conta na ponta direita, porque lá ela continua visível. */
+  .topoDoClube { justify-content: flex-start; }
+}
+
+/* Tabela compartilhada. Membros e o painel ainda têm cópias locais desta
+   mesma regra — migrar as duas é limpeza para depois, fora de uma feature. */
+.tabela { width: 100%; border-collapse: collapse; }
+.tabela th {
+  text-align: left;
+  font-family: var(--mono); font-size: 10.5px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft);
+  padding: 14px 20px;
+  background: var(--paper-tint);
+}
+.tabela td { padding: 16px 20px; border-top: 1px solid var(--line); font-size: 14px; vertical-align: middle; }
+.moldura { overflow: hidden; }
+
+@media (max-width: 860px) {
+  .tabela thead { display: none; }
+  .tabela tr { display: grid; gap: 6px; padding: 16px 18px; border-top: 1px solid var(--line); }
+  .tabela td { display: block; padding: 0; border: none; }
+  /* Sem o cabeçalho, a célula precisa dizer de que coluna é: duas datas
+     seguidas, ou "Regular" e "Avançada" como dois chips iguais, não se
+     distinguiam. Quem monta a tabela põe o título da coluna em `data-rotulo`. */
+  .tabela td[data-rotulo]::before {
+    content: attr(data-rotulo);
+    display: block; margin-bottom: 2px;
+    font-family: var(--mono); font-size: 10.5px; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft);
+  }
+}
+
+/* ---- aviso legal das telas de acesso e linhas de aceite ---- */
+/* /login, /cadastro e /senha não têm o rodapé do site — e são justamente as
+   telas em que alguém chega por link direto, sem passar pela home. Sem esta
+   linha, o primeiro contato com o produto não dizia que ele é independente,
+   nem onde estão as regras. M1, sugestão 2. */
+.rodapeLegal {
+  margin-top: 30px;
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  text-align: center;
+}
+.rodapeLegal a { color: var(--pine); text-decoration: underline; text-underline-offset: 2px; }
+
+/* A linha de aceite: caixa alinhada ao topo do texto, que tem três linhas no
+   celular e desalinharia com `align-items: center`. */
+.aceite {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+.aceite input {
+  width: 19px;
+  height: 19px;
+  flex-shrink: 0;
+  margin-top: 1px;
+  accent-color: var(--pine);
+}
+.aceite a { color: var(--pine); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+
+/* ---------- interruptor de tema ---------- */
+/* 38px para casar com `LinkIcone tom="escuro"`, que é a vizinhança dele na
+   barra do clube. */
+.interruptor {
+  display: inline-grid; place-items: center;
+  width: 38px; height: 38px;
+  border-radius: 9px; border: 1px solid var(--line-dark);
+  background: transparent; color: var(--on-dark); cursor: pointer;
+}
+@media (hover: hover) and (pointer: fine) { .interruptor:hover:not(:disabled) { border-color: var(--on-dark-soft); } }
+
+.interruptorPilula {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 9px 15px; border-radius: 999px;
+  border: 1.4px solid var(--line-strong); background: var(--branco);
+  font-family: var(--corpo); font-size: 13px; font-weight: 600; color: var(--ink);
+  cursor: pointer;
+}
+@media (hover: hover) and (pointer: fine) { .interruptorPilula:hover:not(:disabled) { border-color: var(--ink-soft); } }
+
+/* Ligado é dourado nos dois formatos: num ícone sozinho, a cor é a única
+   resposta para "está ligado?". */
+.interruptorLigado {
+  border-color: rgba(242, 179, 44, 0.45);
+  background: rgba(242, 179, 44, 0.14);
+  color: var(--gold);
+}
+.interruptor:disabled, .interruptorPilula:disabled { opacity: 0.6; cursor: default; }

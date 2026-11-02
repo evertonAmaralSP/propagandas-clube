@@ -1,0 +1,70 @@
+.cabeca { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 26px; }
+.cabeca > div { display: flex; flex-direction: column; gap: 10px; max-width: 640px; }
+.cabeca > div > p:last-child { margin-top: 0; }
+
+.filtros { display: flex; flex-direction: column; gap: 14px; }
+.busca { max-width: 420px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  padding: 7px 13px; border-radius: 100px; border: 1.4px solid var(--line-strong);
+  background: var(--branco); color: var(--ink); font-family: var(--corpo); font-size: 13px; font-weight: 500; cursor: pointer;
+}
+.chip:focus-visible { outline: 2px solid var(--pine); outline-offset: 2px; }
+.chipAtivo { background: var(--pine-fundo); border-color: var(--pine-fundo); color: #f3f5ee; }
+@media (pointer: coarse) { .chip { min-height: 40px; } }
+
+.contagem { margin: 20px 0 12px !important; font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); }
+.nada { color: var(--ink-soft); padding: 40px 0; text-align: center; }
+
+.grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+.cartao {
+  position: relative; display: block; width: 100%; aspect-ratio: 1; padding: 0; overflow: hidden;
+  border: 1px solid var(--line); border-radius: 12px; background: var(--paper-tint); cursor: zoom-in;
+  box-shadow: var(--shadow);
+}
+.cartao img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 300ms var(--ease-out); }
+.cartao:focus-visible { outline: 2px solid var(--pine); outline-offset: 3px; }
+.legenda {
+  position: absolute; inset: auto 0 0 0; padding: 26px 12px 10px; text-align: left;
+  background: linear-gradient(transparent, rgba(7, 43, 36, 0.82)); color: #f3f5ee;
+  font-size: 13.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+@media (hover: hover) and (pointer: fine) { .cartao:hover img { transform: scale(1.04); } }
+@media (prefers-reduced-motion: reduce) { .cartao img { transition: none; } }
+.semPrevia { display: flex; align-items: center; justify-content: center; height: 100%; font-size: 13px; color: var(--ink-soft); }
+
+.vazia { padding: 48px 28px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; }
+.vazia h2 { font-size: 24px; }
+.vazia p { color: var(--ink-soft); margin-bottom: 8px; }
+
+/* ---------- detalhe ---------- */
+.dialogo {
+  width: min(1080px, calc(100vw - 32px)); max-height: calc(100svh - 32px); padding: 0;
+  border: none; border-radius: 16px; background: var(--branco); box-shadow: var(--shadow-lift); overflow: hidden;
+}
+.dialogo::backdrop { background: rgba(7, 23, 19, 0.72); }
+.dialogoCorpo { display: grid; grid-template-columns: minmax(0, 1fr) 320px; max-height: calc(100svh - 32px); }
+.palco { background: #0f1a16; display: flex; align-items: center; justify-content: center; min-height: 320px; }
+.palco img { max-width: 100%; max-height: calc(100svh - 32px); object-fit: contain; display: block; }
+.ficha { padding: 22px; display: flex; flex-direction: column; gap: 16px; overflow-y: auto; }
+.fichaTopo { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.fichaTopo h2 { font-size: 22px; line-height: 1.2; overflow-wrap: anywhere; }
+.fechar {
+  flex-shrink: 0; width: 36px; height: 36px; border-radius: 8px; border: 1px solid var(--line-strong);
+  background: var(--branco); color: var(--ink); font-size: 22px; line-height: 1; cursor: pointer;
+}
+.fechar:focus-visible { outline: 2px solid var(--pine); outline-offset: 2px; }
+.etiquetas { display: flex; flex-wrap: wrap; gap: 6px; }
+.dados { display: grid; grid-template-columns: auto 1fr; gap: 8px 14px; margin: 0; font-size: 14px; }
+.dados dt { color: var(--ink-soft); }
+.dados dd { margin: 0; }
+.acoes { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.confirmar { padding: 14px; border-radius: 10px; background: rgba(173, 78, 44, 0.08); display: flex; flex-direction: column; gap: 12px; font-size: 14px; }
+
+@media (max-width: 760px) {
+  .cabeca { flex-direction: column; align-items: stretch; }
+  .grade { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .dialogoCorpo { grid-template-columns: 1fr; overflow-y: auto; }
+  .palco { min-height: 220px; }
+  .palco img { max-height: 60svh; }
+}
