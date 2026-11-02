@@ -1,0 +1,66 @@
+.cabeca { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; max-width: 680px; }
+.cabeca > p:last-child { margin-top: 0; }
+
+.grade { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 28px; align-items: start; }
+
+.barra { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+.subtitulo { font-size: 20px; }
+
+.fundos { display: flex; gap: 6px; flex-wrap: wrap; }
+.fundo {
+  font: inherit; font-size: 13px; font-weight: 500; padding: 6px 12px; border-radius: 100px; cursor: pointer;
+  border: 1px solid var(--line-strong); background: var(--branco); color: var(--ink-soft);
+}
+.fundo:focus-visible { outline: 2px solid var(--pine); outline-offset: 2px; }
+.fundoAtivo { background: var(--pine-fundo); border-color: var(--pine-fundo); color: var(--on-dark); }
+
+.lista { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+.cartao { display: flex; flex-direction: column; overflow: hidden; }
+
+/* O palco mostra o PNG inteiro sobre o fundo escolhido, sem cortar. */
+.palco { aspect-ratio: 4 / 3; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.palco img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
+.palcoEnvio { border-radius: 12px; border: 1px solid var(--line); }
+.xadrez {
+  background-color: #ffffff;
+  background-image:
+    linear-gradient(45deg, #e3e6df 25%, transparent 25%), linear-gradient(-45deg, #e3e6df 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #e3e6df 75%), linear-gradient(-45deg, transparent 75%, #e3e6df 75%);
+  background-size: 18px 18px;
+  background-position: 0 0, 0 9px, 9px -9px, -9px 0;
+}
+.claro { background: var(--paper); }
+.escuro { background: var(--chrome); }
+.semPrevia { font-size: 13px; color: var(--ink-soft); }
+
+.ficha { padding: 14px 16px 16px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 4px; }
+.fichaTopo { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.nome { font-size: 17px; overflow-wrap: anywhere; }
+.acoes { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.confirmar { margin-top: 10px; padding: 12px; border-radius: 10px; background: rgba(173, 78, 44, 0.08); font-size: 13.5px; }
+.confirmar .acoes { margin-top: 8px; }
+
+.vazia { padding: 44px 28px; display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
+.vazia h3 { font-size: 22px; }
+.vazia p { color: var(--ink-soft); }
+
+.painel { padding: 22px; display: flex; flex-direction: column; gap: 16px; position: sticky; top: 24px; }
+.zona {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+  min-height: 190px; padding: 24px 18px; border-radius: 14px; text-align: center; cursor: pointer;
+  border: 2px dashed var(--linha-campo); background: var(--branco); color: var(--pine);
+  transition: background 160ms ease, border-color 160ms ease;
+}
+.zona:focus-within { outline: 2px solid var(--pine); outline-offset: 2px; }
+.zonaAtiva { border-color: var(--pine); background: var(--paper-tint); }
+@media (hover: hover) and (pointer: fine) { .zona:hover { border-color: var(--pine); } }
+.zonaTitulo { font-family: var(--display); font-weight: 600; font-size: 19px; color: var(--ink); }
+.zonaSub { font-size: 14px; color: var(--ink-soft); }
+.oculto { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.aviso { font-size: 13px; padding: 10px 12px; border-radius: 10px; background: var(--gold-soft); color: var(--gold-ink); }
+
+@media (max-width: 900px) {
+  .grade { grid-template-columns: 1fr; }
+  /* no celular o envio vem antes da lista */
+  .painel { position: static; order: -1; }
+}
